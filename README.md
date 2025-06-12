@@ -1,6 +1,7 @@
-# SystemVerilog 기본 개요
+# SystemVerilog 개요
 
 SystemVerilog는 하드웨어 설계 및 검증을 위한 하드웨어 기술 언어(HDL)로, 기존 Verilog를 확장한 표준입니다. IEEE Std 1800-2017로 표준화되어 있습니다.
+MobaXterm을 사용하여 vcs, verdi를 활용하였으며 기본적인 메모 사항을 .md 형식으로 정리하하였습니다. 
 
 ## 1. SystemVerilog란?
 
