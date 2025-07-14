@@ -1,65 +1,127 @@
-# SystemVerilog 개요
+## Verilog
 
-SystemVerilog는 하드웨어 설계 및 검증을 위한 하드웨어 기술 언어(HDL)로, 기존 Verilog를 확장한 표준입니다. IEEE Std 1800-2017로 표준화되어 있습니다.
-MobaXterm을 사용하여 vcs, verdi를 활용하였으며 기본적인 메모 사항을 .md 형식으로 정리하하였습니다. 
+### 1. 개요
+- 국내 반도체 팹리스 현황, 삼성 파운드리의 4나노 수율 안정화 및 중국 AI 고객 유치 상황 소개
+- Back-end (Design House), Front-end (Fabless) 설계 흐름
 
-## 1. SystemVerilog란?
+### 2. Verilog 핵심 개념
+- **모듈 예제:** `ham_7_4_enc` Hamming Encoder 설계
+- **initial vs always**
+  - `initial`: 시뮬레이션 한 번만 실행
+  - `always`: 반복 실행
+- **논리 종류**
+  - 조합논리 (Combinational Logic)
+  - 순차논리 (Sequential Logic)
+- **연산자**
+  - 산술, 관계, 동등, 논리, 비트, 쉬프트 연산자 등
+- **Reg vs Wire**
+  - `wire`: 연속 할당
+  - `reg`: 저장 기능 포함 (절차적 할당)
+- **Blocking vs Non-blocking**
+  - `=`: Blocking, 순차적
+  - `<=`: Non-blocking, 병렬적
+- **Latch vs Flip-Flop**
+  - Latch 문제 방지를 위한 `else` 조건 필수
+- **설계 예시**
+  - 카운터, 쉬프트 레지스터 등
 
-SystemVerilog는 RTL 설계, 테스트벤치 개발, 기능 검증 및 포멀 검증을 위한 다양한 기능을 제공합니다. 설계자와 검증자가 하나의 언어로 작업할 수 있게 지원합니다.
+---
 
-## 2. 주요 특징
+## SystemVerilog
 
-- **디자인 모델링**
-  - 모듈 (`module`)
-  - 인터페이스 (`interface`)
-  - 구조체, 공용체 (`struct`, `union`)
-  - 열거형 (`enum`)
-  - 클래스 기반 객체지향 프로그래밍
+### 1. DUT 및 테스트 환경
+- Router DUT의 입력/출력 구조
+- Verification 환경: Program Block, Interface, Clocking Block 등
 
+### 2. 언어 기초
 - **데이터 타입**
-  - 논리형 (`logic`)
-  - 4-상태형 (`0, 1, x, z`)
-  - 정수형 (`int`, `integer`, `bit`)
-  - 실수형 (`real`, `shortreal`)
-  - 동적 배열, 연결 리스트 (`queue`, `dynamic array`, `associative array`)
+  - 2-State: `bit`
+  - 4-State: `reg`, `logic`
+  - 동적 배열, 연관 배열, 큐 등
+- **연산자**
+  - `inside`, `iff`, `===` 등
 
-- **절차적 블록**
-  - `initial`, `always`, `final` 블록
-  - `if`, `case`, `for`, `foreach`, `while`, `do-while`
+### 3. 병행성 (Concurrency)
+- `fork...join` 등 병렬 처리 기법
+- Thread 동기화, watchdog timer 구현 예시
 
-- **클래스와 객체**
-  - 클래스 정의, 상속, 다형성
-  - 생성자 (`new()`), 메서드, 가상 메서드
+### 4. 클래스 및 OOP
+- `class`, `object`, `this`, 상속, 다형성
+- 패키지 사용법 및 예제
 
-## 3. 검증 기능
+### 5. 무작위화 (Randomization)
+- `rand`, `randc`, `constraint`
+- `randomize()` 사용 및 runtime 제어
 
-- **랜덤화**
-  - `rand`, `randc` 키워드
-  - `constraint` 블록을 통한 제약 조건 정의
+### 6. 상속 및 스레드 간 통신
+- `mailbox`, `semaphore`, `event` 활용 예
 
-- **어설션 (Assertions)**
-  - 즉시 어설션 (`assert`)
-  - 동시 어설션 (`assert property`)
-  - SVA (SystemVerilog Assertions)
+### 7. Functional Coverage
+- 상태 전이 커버리지, 조건 커버리지 등
+- 자동 bin 생성 및 측정 예제 포함
 
-- **커버리지**
-  - `covergroup`, `coverpoint`, `cross`
+---
 
-- **인터프로세스 통신**
-  - `mailbox`, `semaphore`, `event`
+## Synthesis (Design Compiler)
 
-## 4. 시뮬레이션 시간 제어
+### 1. 기본 합성 흐름
+- RTL → Gate-level → Netlist
 
-- `#`, `@`, `##` 등을 통한 시간 지연, 이벤트 대기
-- `timeunit`, `timeprecision`, `timescale` 지시자
+### 2. Timing 요소
+- Setup/Hold, Recovery/Removal, Clock Skew, Critical Path
 
-## 5. 디자인 계층 구조 및 네임스페이스
+### 3. Timing 제약 명령어
+- `create_clock`, `set_input_delay`, `set_output_delay`
+- `set_clock_uncertainty`, `set_max_fanout`, `set_false_path`
+- `set_multicycle_path` 등
 
-- 모듈 및 인스턴스 계층
-- `package`를 통한 재사용 및 모듈화
-- `import`, `export`를 통한 이름 공간 관리
+### 4. 주요 개념
+- Clock Transition, Max Transition Time
+- Constraint 설정 예시 포함
 
-## 6. 인터페이스와 Clocking block
+---
 
-- 인터페이스: 모듈 간 신호 그룹화
-- Clocking block: 클럭 도메인 정의 및 동기화 제어
+## VCS
+
+### 1. VCS Flow
+- **3단계 Flow:** `vlogan → elaboration → simv`
+- Legacy 코드 포함 가능
+
+### 2. 커버리지
+- 조건, 분기, FSM, Assertion 커버리지 지원
+- URG로 커버리지 결과 병합 및 보고
+
+### 3. Partition Compile
+- 병렬 컴파일 지원 (3-step, profiling 지원)
+
+### 4. FGP (Fine Grained Parallelism)
+- 멀티코어 병렬 실행 지원
+- EPC 계산, 성능 측정
+
+### 5. X-Prop
+- RTL 레벨 X 전파 이슈 검증
+
+### 6. Save & Restore
+- `$save`, `$restart` 명령어를 통한 상태 저장 및 복구
+
+---
+
+## VERDI
+
+### 1. 데이터 준비 (FSDB, KDB)
+- `$fsdbDumpfile`, `$fsdbDumpvars` 활용
+- `vericom`으로 KDB 생성
+
+### 2. GUI 기능
+- 설정파일: `novas.rc`
+- 매크로 주석, GUI 설정
+
+### 3. 주요 기능
+- **nTrace**: 신호 추적
+- **nSchema**: 회로도 기반 설계 보기
+- **nWave**: 파형 보기 및 조작
+- **nState**: FSM 상태 흐름도
+- **TFV**: Temporal Flow View, 원인 분석
+
+### 4. 디버깅 활용
+- Signal tracing, signal manipulation, forced signal 등
